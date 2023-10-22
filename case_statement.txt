@@ -1,0 +1,60 @@
+To write a case statement in "tcsh" shell
+
+
+#! /bin/tcsh
+
+set option = "$<"
+
+echo "enter the option
+switch ($option)
+    case "a":
+	echo "entered option a "
+    breaksw
+     
+     case "b":
+	echo "enterd option b "
+     breaksw
+
+     default:
+       echo "Invalid option"
+    breaksw
+endsw
+
+
+
+example:
+
+#!/bin/tcsh
+
+# Description: Using this script we can trying to get details from RS machine and VDI machines.
+# Author : Govardhan
+# Created Date : 10-july-2023
+# Modified Date : 10-july-2023
+
+# caution : Please don't make any changes to script without any update. Thanks
+
+echo ' a = VDI_Details '
+echo ' b = RS_Details '
+
+echo "please enter the option"
+set option = "$<"
+
+
+switch ($option)
+  case "a":
+    echo "you have choosen option 'a' for VDI Details Check"
+    echo "enter VDI Hostname"
+    set hostname = "$<"
+    set username = `echo $hostname | awk -F '[.-]' '{print $1}'`
+    ssh $hostname " echo '==== etx process status ===='; ps -ef | grep -i etx | grep -v grep; echo '==== uptime ===='; uptime -p; echo '==== date ===='; date; echo '==== home & nobackup ===='; df -kh /home/$username; df -kh /nobackup/$username; echo '==== hostname ===='; hostname "
+    breaksw
+case "b":
+    echo "you have choosen option 'b' for RS Details Check"
+    echo "enter RS Hostname"
+    set hostname = "$<"
+    ssh $hostname "echo "======";ps -ef | grep -i bcom; echo "======";hostname;echo "======";uptime;echo "=====";date"
+    breaksw
+  default:
+    echo "Invalid option"
+    breaksw
+endsw
